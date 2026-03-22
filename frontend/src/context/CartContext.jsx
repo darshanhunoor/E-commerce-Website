@@ -27,7 +27,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product, quantity = 1) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.productId === product._id);
-      
+
       if (existingItem) {
         return prevItems.map((item) =>
           item.productId === product._id
@@ -35,7 +35,7 @@ export const CartProvider = ({ children }) => {
             : item
         );
       }
-      
+
       return [
         ...prevItems,
         {
