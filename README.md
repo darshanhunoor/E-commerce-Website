@@ -211,7 +211,7 @@ To test admin features, you can create an admin account by:
    - `MONGODB_URI` - Your MongoDB Atlas connection string
    - `JWT_SECRET` - Your JWT secret
    - `PORT` - 10000 (Render default)
-   - `FRONTEND_URL` - Your Vercel frontend URL
+   - `FRONTEND_URL` - https://e-commerce-website-neon-seven.vercel.app
 
 6. Set build command: `npm install`
 7. Set start command: `node server.js`

@@ -102,7 +102,7 @@ Complete guide to deploy your MERN application to production.
    MONGODB_URI = mongodb+srv://username:password@cluster.mongodb.net/ecommerce?retryWrites=true&w=majority
    JWT_SECRET = your_strong_jwt_secret_key_change_this
    PORT = 10000
-   FRONTEND_URL = https://yourdomain.vercel.app
+   FRONTEND_URL = https://e-commerce-website-neon-seven.vercel.app
    NODE_ENV = production
    ```
 
@@ -158,10 +158,21 @@ Complete guide to deploy your MERN application to production.
      VITE_API_URL = https://ecommerce-api.onrender.com/api
      ```
 
-5. **Deploy**
+5. **Vercel Project ID Note**
+   - The Vercel Project ID is used for Vercel CLI or GitHub Actions, not by your React app at runtime
+   - Keep it out of `frontend/.env` unless you also build deployment automation that reads it
+   - For automated deployments, you typically need all three values:
+     ```
+     VERCEL_PROJECT_ID = prj_your_project_id
+     VERCEL_ORG_ID = team_your_team_or_user_id
+     VERCEL_TOKEN = your_vercel_token
+     ```
+   - If you only deploy from the Vercel dashboard, you do not need to add the Project ID to this codebase
+
+6. **Deploy**
    - Click "Deploy"
    - Wait for build completion (2-3 minutes)
-   - Your frontend will be available at: `https://yourdomain.vercel.app`
+   - Your frontend will be available at: `https://e-commerce-website-neon-seven.vercel.app`
 
 ---
 
@@ -180,7 +191,7 @@ PORT=10000
 NODE_ENV=production
 
 # Frontend URL (for CORS)
-FRONTEND_URL=https://yourdomain.vercel.app
+FRONTEND_URL=https://e-commerce-website-neon-seven.vercel.app
 ```
 
 ### Frontend (.env)
