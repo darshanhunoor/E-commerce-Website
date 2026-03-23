@@ -21,21 +21,49 @@ const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+const isAllowedOrigin = (origin) => allowedOrigins.some((allowedOrigin) => {
+  if (allowedOrigin === origin) {
+    return true;
+  }
+
+  if (!allowedOrigin.includes('*')) {
+    return false;
+  }
+
+  const wildcardPattern = allowedOrigin
+    .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+    .replace(/\*/g, '.*');
+
+  return new RegExp(`^${wildcardPattern}$`).test(origin);
+});
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || isAllowedOrigin(origin)) {
       callback(null, true);
       return;
     }
-    callback(new Error('Not allowed by CORS'));
+
+    console.warn(`Blocked CORS origin: ${origin}`);
+
+    const corsError = new Error(`Not allowed by CORS: ${origin}`);
+    corsError.status = 403;
+    callback(corsError);
   },
   credentials: true,
 }));
 
 // Routes
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'E-Commerce API is running',
+    health: '/api/health',
+  });
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
@@ -48,7 +76,10 @@ app.get('/api/health', (req, res) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  res.status(404).json({
+    message: 'Route not found',
+    path: req.originalUrl,
+  });
 });
 
 // Error handling middleware
